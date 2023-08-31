@@ -3,9 +3,9 @@
     1 - paper
     2 - scissors
 */
+
 function getComputerChoice() {
     let rand = Math.floor(Math.random() * 3);
-
     return rand;
 }
 
@@ -28,4 +28,22 @@ function getPlayerChoice() {
             return 2;
         else alert("Incorrect input, must be 'rock', 'paper' or 'scissors' (case insensitive)");
     }
+}
+
+function playRound()
+{
+    let computerChoice = getComputerChoice();
+    let playerChoice = getPlayerChoice();
+
+    if (playerChoice === null)
+        {
+            // add something later
+            return null;
+        }
+    
+    if (playerChoice === computerChoice)
+        return 0;
+    if ((playerChoice === 2 && computerChoice === 0) || (playerChoice - computerChoice === -1))
+        return -1;
+    else return 1;
 }
