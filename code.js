@@ -9,104 +9,123 @@ function getComputerChoice() {
     return rand;
 }
 
-function getPlayerChoice() {
-    let choice;
-    while (true) {
-        choice = prompt("Choose one: rock, paper or scissors");
+function restart(e) {
 
-        if (!choice)
-            if (confirm("You didn't input anything.. Do you want to quit the game?"))
-                return null;
-            else continue;
+    let buttons = document.querySelectorAll('button');
+    let gameLog = document.querySelector('.gamelog');
+    let scores = document.querySelectorAll('var');
 
-        choice = choice.toLowerCase();
-        if (choice === "rock")
-            return 0;
-        else if (choice === "paper")
-            return 1;
-        else if (choice === "scissors")
-            return 2;
-        else alert("Incorrect input, must be 'rock', 'paper' or 'scissors' (case insensitive)");
+    scores.forEach((score) => {
+        score.textContent = 0;
+    });
+
+    buttons.forEach((btn) => {
+        btn.disabled = false;
+    });
+
+    while(gameLog.childElementCount > 1) {
+        gameLog.removeChild(gameLog.lastChild);
     }
+
+    e.target.parentElement.removeChild(e.target);
 }
 
-function playRound() {
-    let computerChoice = getComputerChoice();
-    let playerChoice = getPlayerChoice();
+function finishGame(finalLog) {
+    let restartBtn = document.createElement('button');
+    let newLog = document.createElement('p');
+    let gameLog = document.querySelector('.gamelog');
+    let buttons = document.querySelectorAll('button');
+    let leftPanel = document.querySelector('.left');
 
-    if (playerChoice === null) {
-        console.log("Wrapping up..");
-        return null;
-    }
+    buttons.forEach((btn) => {
+        btn.disabled = true;
+    });
+
+    newLog.textContent = finalLog;
+    gameLog.appendChild(newLog);
+
+    restartBtn.textContent = "Restart?";
+    restartBtn.addEventListener('click', restart);
+    leftPanel.appendChild(restartBtn);
+}
+
+function determineWinner(playerChoice, computerChoice) {
+    let newLog = document.createElement('p');
+    let gameLog = document.querySelector('.gamelog');
+    let round = document.querySelector('.round var');
+    let playerScore = document.querySelector('.playerScore var');
+    let CPUScore = document.querySelector('.CPUScore var');
 
     if (playerChoice === computerChoice) {
-        console.log("It's a Tie! You both choose the same thing!");
-        return 0;
+        newLog.textContent = "It's a Tie! You both choose the same thing!";
     }
 
     if (playerChoice === 0) {
         if (computerChoice === 1) {
-            console.log("You Lose! Paper beats Rock");
-            return -1;
+            newLog.textContent = "You Lose! Paper beats Rock";
+            CPUScore.textContent++;
         }
         if (computerChoice === 2) {
-            console.log("You Win! Rock beats Scissors");
-            return 1;
+            newLog.textContent = "You Win! Rock beats Scissors";
+            playerScore.textContent++;
         }
     }
 
     if (playerChoice === 1) {
         if (computerChoice === 0) {
-            console.log("You Win! Paper beats Rock");
-            return 1;
+            newLog.textContent = "You Win! Paper beats Rock";
+            playerScore.textContent++;
         }
         if (computerChoice === 2) {
-            console.log("You Lose! Scissors beat Paper");
-            return -1;
+            newLog.textContent = "You Lose! Scissors beat Paper";
+            CPUScore.textContent++;
         }
     }
 
     if (playerChoice === 2) {
         if (computerChoice === 1) {
-            console.log("You Win! Scissors beat Paper");
-            return 1;
+            newLog.textContent = "You Win! Scissors beat Paper";
+            playerScore.textContent++;
         }
-        if (computerChoice === 2) {
-            console.log("You Lose! Rock beats Scissors");
-            return -1;
+        if (computerChoice === 0) {
+            newLog.textContent = "You Lose! Rock beats Scissors";
+            CPUScore.textContent++;
         }
     }
 
-    /* Doesn't allow us to tell who choose what, and additional checks would defeat its purpose
+    gameLog.appendChild(newLog);
+    round.textContent++;
+
+    if (playerScore.textContent == 5) {
+        finishGame("Congratulations! You Won the game!");
+    } else if (CPUScore.textContent == 5) {
+        finishGame("This time You Lost.. Care for a rematch?");
+    }
+}
+
+function playRound(e) {
+    let playerChoice = e.target.classList[0];
+
+    if (playerChoice === "rock")
+        playerChoice = 0;
+    else if (playerChoice === "paper")
+        playerChoice = 1;
+    else if (playerChoice === "scissors")
+        playerChoice = 2;
+    //  exit in case of click on interface, but not the buttons
+    else return 0;
+
+    let computerChoice = getComputerChoice();
+    determineWinner(playerChoice, computerChoice);
+
+    /* Doesn't allow us to tell who choose what for logging, and
+       additional checks would defeat its purpose
 
     if ((playerChoice === 2 && computerChoice === 0) || (playerChoice - computerChoice === -1))
-        return -1;
-    else return 1;
+        console.log("You Lose!");
+    else console.log("You Win!");
     */
 }
 
-function game(rounds = 1) {
-    let playerScore = 0;
-    let computerScore = 0;
-    let result = 0;
-
-    for (let i = 0; i < rounds; i++) {
-        result = playRound();
-
-        if (result === null)
-            break;
-
-        if (result < 0)
-            computerScore++;
-        else if (result > 0)
-            playerScore++;
-    }
-
-    if (playerScore > computerScore)
-        console.log("You Won the game!");
-    else if (playerScore < computerScore)
-    console.log("You Lost the game, this time at the very least..");
-    else console.log("The game ended in a Tie!");
-
-    console.log(`Results:\nPlayer: ${playerScore}\nComputer: ${computerScore}`)
-}
+let interface = document.querySelector('.interface');
+interface.addEventListener('click', playRound);
