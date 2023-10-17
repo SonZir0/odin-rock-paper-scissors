@@ -1,0 +1,105 @@
+html {
+    box-sizing: border-box;
+    height: 100%;
+  }
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+  }
+
+body {
+    margin: 0px;
+    height: 100%;
+    min-width: 400px;
+    display: flex;
+    flex-direction: column;
+    background-color: gainsboro;
+}
+
+main {
+    margin: 0px 25vw;
+    min-width: 225px;
+}
+
+header p {
+    font-size: 64px;
+    text-align: center;
+    margin: 20px 0px 10px;
+}
+
+header .second {
+    margin-top: 10px;
+    font-size: 50px;
+}
+
+.interface {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    justify-items: center;
+    gap: 50px;
+    margin: 50px 0px;
+}
+
+button {
+    flex: none;
+    height: 64px;
+    width: 10vw;
+    min-width: 140px;
+    padding: 16px 24px;
+    font-size: 24px;
+    border-color: darkslategray;
+    border-radius: 20px;
+    background-color: ghostwhite;
+}
+
+.info {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+ul {
+    margin: 0px;
+    padding: 10px;
+    list-style-type: none;
+    font-size: 24px;
+    display: inline-block;
+
+    border: solid 4px darkslategray;
+    border-radius: 15px;
+    width: 200px;
+}
+
+li {
+    display: flex;
+}
+
+var {
+    margin-left: auto;
+}
+
+.gamelog {
+    flex: auto;
+    border: solid 4px darkslategray;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.gamelog p {
+    margin: 0px 0px 8px;
+    font-size: 24px;
+}
+
+footer {
+    flex: none;
+    margin-top: auto;
+    text-align: center;
+
+    font-size: 24px;
+    padding: 20px;
+    background-color: lightslategray;
+}
